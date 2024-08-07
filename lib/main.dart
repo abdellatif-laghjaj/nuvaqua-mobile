@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/login_page.dart';
-import 'package:flutter_app/theme/app_theme.dart';
+import 'package:nuvaqua_mobile/theme/app_theme.dart';
 
 import 'dashboard_page.dart';
+import 'login_page.dart';
 import 'profile_page.dart';
 
 void main() {
