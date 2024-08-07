@@ -17,9 +17,10 @@ class MyApp extends StatelessWidget {
       title: 'Nuvaqua',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      themeMode: ThemeMode.system,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => const LoginPage(),
         '/dashboard': (context) => DashboardPage(
               userData: ModalRoute.of(context)!.settings.arguments
                   as Map<String, String>,
@@ -39,8 +40,8 @@ class MyApp extends StatelessWidget {
       ],
       // Specify the supported locales
       supportedLocales: const [
-        Locale('ar', ''), // Arabic
-        Locale('en', ''), // English (you can add more locales if needed)
+        Locale('ar', ''),
+        Locale('en', ''),
       ],
     );
   }
