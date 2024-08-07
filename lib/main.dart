@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+import 'package:flutter_app/login_page.dart';
+import 'package:flutter_app/theme/app_theme.dart';
+
 import 'dashboard_page.dart';
 import 'profile_page.dart';
 
@@ -12,9 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.lightTheme, // Use our custom theme
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),

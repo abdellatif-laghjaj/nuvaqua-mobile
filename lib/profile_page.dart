@@ -16,6 +16,7 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Username: ${userData['username']}'),
+            SizedBox(height: 10), // Add spacing between text elements
             Text('Email: ${userData['email']}'),
           ],
         ),

@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Center the content
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(labelText: 'Username'),
@@ -34,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                   _username = value!;
                 },
               ),
+              SizedBox(height: 20), // Add spacing between fields
               TextFormField(
                 decoration: InputDecoration(labelText: 'Email'),
                 validator: (value) {
@@ -46,21 +48,19 @@ class _LoginPageState extends State<LoginPage> {
                   _email = value!;
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      Navigator.pushNamed(
-                        context,
-                        '/dashboard',
-                        arguments: {'username': _username, 'email': _email},
-                      );
-                    }
-                  },
-                  child: Text('Login'),
-                ),
+              SizedBox(height: 30), // Add spacing before the button
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    Navigator.pushNamed(
+                      context,
+                      '/dashboard',
+                      arguments: {'username': _username, 'email': _email},
+                    );
+                  }
+                },
+                child: Text('Login'),
               ),
             ],
           ),
