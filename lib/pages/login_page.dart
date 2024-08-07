@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_input.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _username = '';
-  String _email = '';
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.primary,
+        title: const Text('تسجيل الدخول'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -26,28 +27,41 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Text(
-                  'Welcome Back',
+                  'مرحبًا بعودتك',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                SizedBox(height: 40),
-                _buildInputField(
-                  label: 'Username',
+                const SizedBox(height: 40),
+                CustomInputField(
+                  label: 'اسم المستخدم',
                   icon: Icons.person,
-                  onSaved: (value) => _username = value!,
+                  controller: _usernameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'الرجاء إدخال اسم المستخدم';
+                    }
+                    return null;
+                  },
                 ),
-                SizedBox(height: 20),
-                _buildInputField(
-                  label: 'Email',
+                const SizedBox(height: 20),
+                CustomInputField(
+                  label: 'البريد الإلكتروني',
                   icon: Icons.email,
-                  onSaved: (value) => _email = value!,
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'الرجاء إدخال البريد الإلكتروني';
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                SizedBox(height: 40),
-                FilledButton(
+                const SizedBox(height: 40),
+                ElevatedButton(
                   onPressed: _handleLogin,
                   style: FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
@@ -55,11 +69,13 @@ class _LoginPageState extends State<LoginPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 18),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      'تسجيل الدخول',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
               ],
@@ -70,34 +86,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildInputField({
-    required String label,
-    required IconData icon,
-    required Function(String?) onSaved,
-  }) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your $label';
-        }
-        return null;
-      },
-      onSaved: onSaved,
-    );
-  }
-
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+      // Perform login logic
       Navigator.pushNamed(
         context,
         '/dashboard',
-        arguments: {'username': _username, 'email': _email},
+        arguments: {
+          'username': _usernameController.text,
+          'email': _emailController.text,
+        },
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    super.dispose();
   }
 }
