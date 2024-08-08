@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'tabs/dashboard_tab.dart';
+import 'tabs/profile_tab.dart';
 
 class DashboardPage extends StatefulWidget {
   final Map<String, String> userData;
@@ -12,13 +14,9 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Dashboard Content',
-    ),
-    Text(
-      'Profile Content',
-    ),
+  static final List<Widget> _widgetOptions = <Widget>[
+    DashboardTab(),
+    ProfileTab(userData: const {'username': 'JohnDoe', 'email': 'asdsa'}),
   ];
 
   void _onItemTapped(int index) {
@@ -31,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: const Text('Dashboard'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -39,7 +37,7 @@ class _DashboardPageState extends State<DashboardPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.dashboard),
             label: 'Dashboard',
           ),
           BottomNavigationBarItem(
