@@ -3,6 +3,8 @@ import 'package:nuvaqua_mobile/models/water_consumption.dart';
 import 'package:nuvaqua_mobile/widgets/water_consumption_chart.dart';
 
 class DashboardTab extends StatefulWidget {
+  const DashboardTab({super.key});
+
   @override
   _DashboardTabState createState() => _DashboardTabState();
 }
@@ -40,7 +42,7 @@ class _DashboardTabState extends State<DashboardTab> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'This month\'s water consumption: ${_waterConsumption!.currentMonthConsumption} m³',
+                  'استهلاك الماء لهذا الشهر: ${_waterConsumption!.currentMonthConsumption} م³',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
@@ -53,9 +55,9 @@ class _DashboardTabState extends State<DashboardTab> {
                 children: [
                   TabBar(
                     tabs: const [
-                      Tab(text: 'Today'),
-                      Tab(text: 'Weekly'),
-                      Tab(text: 'Monthly'),
+                      Tab(text: 'اليوم'),
+                      Tab(text: 'أسبوعي'),
+                      Tab(text: 'شهري'),
                     ],
                     onTap: (index) {
                       setState(() {
