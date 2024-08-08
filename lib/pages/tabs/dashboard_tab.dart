@@ -39,11 +39,23 @@ class _DashboardTabState extends State<DashboardTab> {
         children: [
           if (_waterConsumption != null)
             Card(
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'استهلاك الماء لهذا الشهر: ${_waterConsumption!.currentMonthConsumption} م³',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'استهلاك الماء لهذا الشهر:',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      '${_waterConsumption!.currentMonthConsumption}م³',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                  ],
                 ),
               ),
             ),
