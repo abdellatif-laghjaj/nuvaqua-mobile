@@ -29,7 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('لوحة التحكم'),
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -38,11 +38,11 @@ class _DashboardPageState extends State<DashboardPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            label: 'لوحة التحكم',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'الملف الشخصي',
           ),
         ],
         currentIndex: _selectedIndex,
