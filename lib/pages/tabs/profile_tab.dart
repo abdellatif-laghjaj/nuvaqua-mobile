@@ -13,12 +13,12 @@ class ProfileTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Username: ${userData['username']}',
+            'اسم المستخدم: ${userData['username']}',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 16.0),
           Text(
-            'Email: ${userData['email']}',
+            'البريد الإلكتروني: ${userData['email']}',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         ],
