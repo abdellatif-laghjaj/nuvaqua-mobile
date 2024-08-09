@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../utils/constans.dart';
 import '../widgets/custom_input.dart';
+import '../models/home_owner.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,8 +16,17 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _cinController = TextEditingController();
+  final _meterNumberController = TextEditingController();
+
+  // Set default values for testing
+
+  @override
+  void initState() {
+    super.initState();
+    _cinController.text = 'd91cd6f5-6f0a-439d-8590-7a5dea3662a5';
+    _meterNumberController.text = '1000';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +48,20 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 40),
               CustomInputField(
-                label: 'اسم المستخدم',
+                label: 'رقم البطاقة الوطنية',
                 icon: Icons.person,
-                controller: _usernameController,
+                controller: _cinController,
                 validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال اسم المستخدم' : null,
+                    value!.isEmpty ? 'الرجاء إدخال رقم البطاقة الوطنية' : null,
               ),
               const SizedBox(height: 20),
               CustomInputField(
-                label: 'البريد الإلكتروني',
-                icon: Icons.email,
-                controller: _emailController,
+                label: 'رقم العداد',
+                icon: Icons.confirmation_number,
+                controller: _meterNumberController,
                 validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال البريد الإلكتروني' : null,
-                keyboardType: TextInputType.emailAddress,
+                    value!.isEmpty ? 'الرجاء إدخال رقم العداد' : null,
+                keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
@@ -63,23 +78,56 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _handleLogin() {
+  void _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(
-        context,
-        '/dashboard',
-        arguments: {
-          'username': _usernameController.text,
-          'email': _emailController.text,
-        },
-      );
+      try {
+        final response = await http.post(
+          Uri.parse('${Constants.apiUrl}/auth/login-homeowner'),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({
+            'cin': _cinController.text,
+            'meterNumber': int.parse(_meterNumberController.text),
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          final homeOwner = HomeOwner.fromJson(data['homeOwner']);
+
+          // Save home owner data to local storage
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('homeOwner', json.encode(homeOwner.toJson()));
+
+          // Navigate to dashboard
+          Navigator.pushReplacementNamed(context, '/dashboard');
+        } else {
+          // Show error toast
+          Fluttertoast.showToast(
+            msg: "بيانات الاعتماد غير صالحة",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        }
+      } catch (e) {
+        print(e);
+        // Show error toast
+        Fluttertoast.showToast(
+          msg: "حدث خطأ أثناء تسجيل الدخول",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
     }
   }
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _emailController.dispose();
+    _cinController.dispose();
+    _meterNumberController.dispose();
     super.dispose();
   }
 }
