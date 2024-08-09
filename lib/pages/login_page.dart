@@ -19,8 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   final _cinController = TextEditingController();
   final _meterNumberController = TextEditingController();
 
-  // Set default values for testing
-
   @override
   void initState() {
     super.initState();
@@ -52,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                 icon: Icons.person,
                 controller: _cinController,
                 validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال رقم البطاقة الوطنية' : null,
+                value!.isEmpty ? 'الرجاء إدخال رقم البطاقة الوطنية' : null,
               ),
               const SizedBox(height: 20),
               CustomInputField(
@@ -60,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 icon: Icons.confirmation_number,
                 controller: _meterNumberController,
                 validator: (value) =>
-                    value!.isEmpty ? 'الرجاء إدخال رقم العداد' : null,
+                value!.isEmpty ? 'الرجاء إدخال رقم العداد' : null,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20),
@@ -92,14 +90,20 @@ class _LoginPageState extends State<LoginPage> {
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
-          final homeOwner = HomeOwner.fromJson(data['homeOwner']);
+          print('Response data: $data'); // Log the response data
 
-          // Save home owner data to local storage
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('homeOwner', json.encode(homeOwner.toJson()));
+          if (data != null) {
+            final homeOwner = HomeOwner.fromJson(data);
 
-          // Navigate to dashboard
-          Navigator.pushReplacementNamed(context, '/dashboard');
+            // Save home owner data to local storage
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('homeOwner', json.encode(homeOwner.toJson()));
+
+            // Navigate to dashboard
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          } else {
+            throw Exception('Failed to parse home owner data');
+          }
         } else {
           // Show error toast
           Fluttertoast.showToast(
@@ -111,10 +115,9 @@ class _LoginPageState extends State<LoginPage> {
           );
         }
       } catch (e) {
-        print(e);
         // Show error toast
         Fluttertoast.showToast(
-          msg: "حدث خطأ أثناء تسجيل الدخول",
+          msg: "Error: ${e.toString()}",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
