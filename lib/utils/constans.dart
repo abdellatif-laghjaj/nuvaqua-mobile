@@ -1,1 +1,3 @@
-// API E
+class Constants {
+  static const String apiUrl = 'http://localhost:5353';
+}
