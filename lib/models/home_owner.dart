@@ -17,23 +17,23 @@ class HomeOwner {
 
   factory HomeOwner.fromJson(Map<String, dynamic> json) {
     return HomeOwner(
-      id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      cin: json['cin'],
-      phone: json['phone'],
-      email: json['email'],
+      id: json['id'] as int?,
+      firstName: json['first_name'] as String? ?? '',
+      lastName: json['last_name'] as String? ?? '',
+      cin: json['cin'] as String? ?? '',
+      phone: json['phone'] as String? ?? '',
+      email: json['email'] as String? ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-      'cin': cin,
-      'phone': phone,
-      'email': email,
+      'firstName': firstName ?? '',
+      'lastName': lastName ?? '',
+      'cin': cin ?? '',
+      'phone': phone ?? '',
+      'email': email ?? '',
     };
   }
 }
